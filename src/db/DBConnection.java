@@ -12,7 +12,7 @@ public class DBConnection {
 	
 	private static Connection connection = null;
 	
-	public static Connection getConnection() {
+	public static Connection openConnection() {
 		if (connection == null){
 			try {
 				 Properties properties = loadProperties();
