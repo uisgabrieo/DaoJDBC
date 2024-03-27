@@ -98,6 +98,7 @@ public class Seller implements Serializable {
 	public String toString() {
 		StringBuilder stringBuilder = new StringBuilder();
 		
+		stringBuilder.append("{");
 		stringBuilder.append("SELLER: \n");
 		stringBuilder.append("id: " + id + "\n");
 		stringBuilder.append("name: " + name + "\n");
@@ -106,6 +107,8 @@ public class Seller implements Serializable {
 		stringBuilder.append("baseSalary: " + baseSalary + "\n");
 		stringBuilder.append("DEPARTMENT: \n");
 		stringBuilder.append(department);
+		stringBuilder.append("}");
+		
 
 		return stringBuilder.toString();
 	}

@@ -53,7 +53,7 @@ public class Department implements Serializable {
 		StringBuilder stringBuilder = new StringBuilder();
 		
 		stringBuilder.append("id: " + id + "\n");
-		stringBuilder.append("name: " + name + "\n");
+		stringBuilder.append("name: " + name);
 		
 		return stringBuilder.toString();
 	}
