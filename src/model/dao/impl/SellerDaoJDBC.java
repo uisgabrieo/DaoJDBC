@@ -4,7 +4,10 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import db.DBException;
 import model.dao.SellerDao;
@@ -38,7 +41,7 @@ public class SellerDaoJDBC implements SellerDao{
 
 	@Override
 	public Seller findById(int id) {
-		ResultSet resultSet = null;
+		ResultSet resultSet;
 		
 		try(PreparedStatement preparedStatement = connection.prepareStatement(
 				"SELECT seller.*, department.Name as DepName "
@@ -51,21 +54,11 @@ public class SellerDaoJDBC implements SellerDao{
 			resultSet = preparedStatement.executeQuery();
 			
 			if (resultSet.next()) {
-				Department department = new Department();
-				Seller seller = new Seller();
 				
-				department.setId(resultSet.getInt("DepartmentId"));
-				department.setName(resultSet.getString("DepName"));
-				
-				seller.setId(resultSet.getInt("Id"));
-				seller.setName(resultSet.getString("Name"));
-				seller.setEmail(resultSet.getString("Email"));
-				seller.setDate(resultSet.getDate("BirthDate").toLocalDate());
-				seller.setBaseSalary(resultSet.getDouble("BaseSalary"));
-				seller.setDepartment(department);
+				Department department = instantiateDepartment(resultSet);
+				Seller seller = instantiateSeller(resultSet, department);
 				
 				return seller;
-				
 			}
 			return null;
 			
@@ -77,9 +70,69 @@ public class SellerDaoJDBC implements SellerDao{
 
 	@Override
 	public List<Seller> findAll() {
-		// TODO Auto-generated method stub
+		
 		return null;
 	}
 
+	@Override
+	public List<Seller> findByDepartment(Department department) {
+		ResultSet resultSet;
+		
+		try(PreparedStatement preparedStatement = connection.prepareStatement(
+				"SELECT seller.*, department.Name as DepName "
+				+"FROM seller INNER JOIN department "
+				+"ON seller.DepartmentId = department.Id "
+				+"WHERE DepartmentId = ? "
+				+"ORDER BY Name")) {
+			
+			preparedStatement.setInt(1, department.getId());
+			
+			resultSet = preparedStatement.executeQuery();
+			
+			List<Seller> sellers = new ArrayList<>();
+			Map<Integer, Department> mapDepartmentMap = new HashMap<>();
+			
+			while (resultSet.next()) {
+				
+				Department dep = mapDepartmentMap.get(resultSet.getInt("DepartmentId"));
+				
+				if(dep == null) {
+					dep = instantiateDepartment(resultSet);
+					mapDepartmentMap.put(resultSet.getInt("DepartmentId"), dep);
+				}
+				
+				Seller seller = instantiateSeller(resultSet, dep);
 
+				sellers.add(seller);
+			}
+			
+			return sellers;
+		} catch (SQLException e) {
+			throw new DBException(e.getMessage());
+		}
+	}
+	
+	public Seller instantiateSeller(ResultSet resultSet, Department department) throws SQLException{
+		Seller seller = new Seller();
+		
+		seller.setId(resultSet.getInt("Id"));
+		seller.setName(resultSet.getString("Name"));
+		seller.setEmail(resultSet.getString("Email"));
+		seller.setDate(resultSet.getDate("BirthDate").toLocalDate());
+		seller.setBaseSalary(resultSet.getDouble("BaseSalary"));
+		seller.setDepartment(department);
+		
+		return seller;
+	}
+	
+	public Department instantiateDepartment(ResultSet resultSet) throws SQLException{
+		Department department = new Department();
+
+		department.setId(resultSet.getInt("DepartmentId"));
+		department.setName(resultSet.getString("DepName"));
+		
+		return department;
+	}
+
+	
 }
