@@ -4,7 +4,9 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.Properties;
 
 
@@ -42,6 +44,27 @@ public class DBConnection {
 			return properties;
 		} catch (Exception e) {
 			throw new DBException(e.getMessage());
+		}
+	}
+
+	public static void closeResultSet(ResultSet resultSet) {
+		if (resultSet != null) {
+			try {
+				resultSet.close();				
+			} catch (SQLException e) {
+				throw new DBException(e.getMessage());
+			}
+		}
+		
+	}
+	
+	public static void closeStatement(Statement statement) {
+		if (statement != null) {
+			try {
+				statement.close();
+			} catch (SQLException e) {
+				throw new DBException(e.getMessage());
+			}
 		}
 	}
 	
