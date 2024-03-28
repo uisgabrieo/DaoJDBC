@@ -33,18 +33,18 @@ public class Program {
 			System.out.println(sellerAll);
 		}
 		
-//		System.out.println("=== TESTE 4: Insert ===");
-//		Seller newSeller = new Seller(null, "Luis Gabriel", "luis@gmail.com", LocalDate.now(), 15000.00, dep);
-//		sellerDao.insert(newSeller);
-//		System.out.println("ID new Seller: " + newSeller.getId());
+		System.out.println("=== TESTE 4: Insert ===");
+		Seller newSeller = new Seller(null, "Luis Gabriel", "luis@gmail.com", LocalDate.now(), 15000.00, dep);
+		sellerDao.insert(newSeller);
+		System.out.println("ID new Seller: " + newSeller.getId());
 		
-//		System.out.println("=== TESTE 5: Update ===");
-//		seller = sellerDao.findById(14);
-//		seller.setName("Carlos Eduardo");
-//		seller.setEmail("cadu@gmail.com");
-//		sellerDao.update(seller);
-//		System.out.println(seller.toString());
-//		
+		System.out.println("=== TESTE 5: Update ===");
+		seller = sellerDao.findById(14);
+		seller.setName("Carlos Eduardo");
+		seller.setEmail("cadu@gmail.com");
+		sellerDao.update(seller);
+		System.out.println(seller.toString());
+		
 		System.out.println("=== TESTE 6: DeleteById ===");
 		sellerDao.deleteById(14);
 		
