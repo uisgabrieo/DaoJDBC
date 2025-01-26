@@ -22,8 +22,6 @@ O projeto consiste em uma implementação simples de um DAO (Data Access Object)
 ## Estrutura do Projeto
 
 A estrutura do projeto segue uma organização simples:
-
-  # Contém as classes de acesso a dados (DAO) / # Contém as entidades representando as tabelas do banco |-- util/ # Contém utilitários como a classe de conexão com o banco |-- Main.java # Classe principal para executar o projeto
 ```
 src/
   |-- application       # Implemetação de uma plaicação     
